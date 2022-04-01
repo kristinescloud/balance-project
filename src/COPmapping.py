@@ -52,6 +52,9 @@ def calibrate():
 def plot_data():
     global cond, centerOfPressureX, centerOfPressureY
 
+    COPx = 0
+    COPy = 0
+    
     if (cond == True):
 
         a = serialData.readline()
@@ -66,20 +69,27 @@ def plot_data():
             for i in range(len(ar)):
                 if ar[i] == '' or ar[i] == '\r\n':
                     print("passed")
-                    pass
+                    ar[i] = 0
                 else:
                     ar[i] = float(ar[i])
 
+            sensOne = ar[0]
+            sensTwo = ar[1]
+            sensThree = ar[2]
+            sensFour = ar[3]
 
-            sensOne = float(ar[0])
-            sensTwo = float(ar[1])
-            sensThree = float(ar[2])
-            sensFour = float(ar[3])
+            if (sensOne + sensTwo + sensThree + sensFour == 0):
+                pass
+            else:
+                COPx = 21*((sensTwo + sensFour)-(sensOne + sensThree))/(sensOne + sensTwo + sensThree + sensFour)
+                COPy = 12*((sensOne + sensTwo)-(sensThree + sensFour))/(sensOne + sensTwo + sensThree + sensFour)
 
-            COPx = 21*((sensTwo + sensFour)-(sensOne + sensThree))/(sensOne + sensTwo + sensThree + sensFour)
-            COPy = 12*((sensOne + sensTwo)-(sensThree + sensFour))/(sensOne + sensTwo + sensThree + sensFour
+                centerOfPressureX = np.append(centerOfPressureX, COPx)
+                centerOfPressureY = np.append(centerOfPressureY, COPy)
 
-            
+        print(centerOfPressureX)
+        print(centerOfPressureY)
+        
         points.set_xdata(centerOfPressureX)
         points.set_ydata(centerOfPressureY)
         
@@ -111,9 +121,9 @@ ax = fig.add_subplot(111)
 ax.set_title('Serial Data');
 ax.set_xlabel('Time')
 ax.set_ylabel('Force')
-ax.set_xlim(0,100)
-ax.set_ylim(-0.5,800)
-points = ax.plot(0,0, color = 'blue')[0]
+ax.set_xlim(0,30)
+ax.set_ylim(0,30)
+points = ax.plot([],[], 'o', color = 'blue')[0]
 
 canvas = FigureCanvasTkAgg(fig, master=root) #A tk.DrawingArea
 canvas.get_tk_widget().place(x = 10,y = 10, width = 600,height = 400)
