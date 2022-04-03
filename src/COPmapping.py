@@ -68,21 +68,21 @@ def plot_data():
         else:
             for i in range(len(ar)):
                 if ar[i] == '' or ar[i] == '\r\n':
-                    print("passed")
+                    #print("passed")
                     ar[i] = 0
                 else:
                     ar[i] = float(ar[i])
 
-            sensOne = ar[0]
-            sensTwo = ar[1]
-            sensThree = ar[2]
-            sensFour = ar[3]
+            sensOne = 0.4545*(ar[0]) + 2.7273
+            sensTwo = 0.4689*(ar[1]) - 159.67
+            sensThree = 0.3058*(ar[2]) - 6.7932
+            sensFour = 0.3605*(ar[3]) - 152.51
 
             if (sensOne + sensTwo + sensThree + sensFour == 0):
                 pass
             else:
-                COPx = 21*((sensTwo + sensFour)-(sensOne + sensThree))/(sensOne + sensTwo + sensThree + sensFour)
-                COPy = 12*((sensOne + sensTwo)-(sensThree + sensFour))/(sensOne + sensTwo + sensThree + sensFour)
+                COPx = 22*((sensTwo + sensFour)-(sensOne + sensThree))/(sensOne + sensTwo + sensThree + sensFour)
+                COPy = 13*((sensOne + sensTwo)-(sensThree + sensFour))/(sensOne + sensTwo + sensThree + sensFour)
 
                 centerOfPressureX = np.append(centerOfPressureX, COPx)
                 centerOfPressureY = np.append(centerOfPressureY, COPy)
@@ -94,6 +94,12 @@ def plot_data():
         points.set_ydata(centerOfPressureY)
         
         canvas.draw()
+
+##--------------- if she's running slow, uncomment the below
+
+##        serialData.flush()
+##        serialData.flushInput()
+##        serialData.flushOutput()
 
     root.after(1, plot_data)
 def start_plot():

@@ -79,6 +79,11 @@ def plot_data():
                     else:
                         ar[i] = float(ar[i])
 
+                ar[0] = 0.4545*(ar[0]) + 2.7273
+                ar[1] = 0.4689*(ar[1]) - 159.67
+                ar[2] = 0.3058*(ar[2]) - 6.7932
+                ar[3] = 0.3605*(ar[3]) - 152.51
+
                 if(len(data1) < 100):
                     data1 = np.append(data1, ar[0])
                     data2 = np.append(data2, ar[1])

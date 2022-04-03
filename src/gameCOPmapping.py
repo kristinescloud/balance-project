@@ -6,7 +6,6 @@ from matplotlib.patches import Circle, Arc
 import tkinter as tk
 import numpy as np
 import serial as sr
-import random
 import time
 
 #---------global variables---------------
@@ -65,7 +64,8 @@ def plot_data():
     global cond, centerOfPressureX, centerOfPressureY, circle, timeInCircle, targetX, targetY, arc
 
     if (cond == True):
-
+
+
         a = serialData.readline()
         ar = a.decode("utf-8")
         ar = ar.split('\t')
@@ -77,25 +77,26 @@ def plot_data():
         else:
             for i in range(len(ar)):
                 if ar[i] == '' or ar[i] == '\r\n':
-                    print("passed")
-                    pass
+                    #print("passed")
+                    ar[i] = 0
                 else:
                     ar[i] = float(ar[i])
 
-       
-                    sensOne = float(ar[0]) 
-                    sensTwo = float(ar[1]) - 400
-                    sensThree = float(ar[2]) - 20
-                    sensFour = float(ar[3]) - 330
+            sensOne = 0.4545*(ar[0]) + 2.7273
+            sensTwo = 0.4689*(ar[1]) - 159.67
+            sensThree = 0.3058*(ar[2]) - 6.7932
+            sensFour = 0.3605*(ar[3]) - 152.51
 
-                    COPx = 22*((sensTwo + sensFour)-(sensOne + sensThree))/(sensOne + sensTwo + sensThree + sensFour)
-                    COPy = 13*((sensOne + sensTwo)-(sensThree + sensFour))/(sensOne + sensTwo + sensThree + sensFour)
+            if (sensOne + sensTwo + sensThree + sensFour == 0):
+                pass
+            else:
+                COPx = 22*((sensTwo + sensFour)-(sensOne + sensThree))/(sensOne + sensTwo + sensThree + sensFour)
+                COPy = 13*((sensOne + sensTwo)-(sensThree + sensFour))/(sensOne + sensTwo + sensThree + sensFour)
+  
+                centerOfPressureX[0] = COPx
+                centerOfPressureY[0] = COPy
 
-                    
-                    centerOfPressureX[0] = COPx
-                    centerOfPressureY[0] = COPy
-
-                    print(COPx, COPy)
+                    #print(COPx, COPy)
         points.set_xdata(centerOfPressureX)
         points.set_ydata(centerOfPressureY)
 
@@ -131,6 +132,11 @@ def plot_data():
 
         
         canvas.draw()
+##--------------- if she's running slow, uncomment the below
+
+##        serialData.flush()
+##        serialData.flushInput()
+##        serialData.flushOutput()
 
     root.after(1, plot_data)
 
