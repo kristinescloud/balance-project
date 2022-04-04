@@ -144,7 +144,7 @@ ax.set_title('Serial Data');
 ax.set_xlabel('Time')
 ax.set_ylabel('Force')
 ax.set_xlim(0,100)
-ax.set_ylim(-0.5,600)
+ax.set_ylim(-0.5,300)
 line1 = ax.plot([],[], color = 'green')[0]
 line2 = ax.plot([],[], color = 'blue')[0]
 line3 = ax.plot([],[], color = 'cyan')[0]
@@ -168,7 +168,7 @@ cal = tk.Button(root, text = "Calibrate", font = ('calbiri',12), command = lambd
 cal.place(x = stop.winfo_x() + stop.winfo_reqwidth() + 20, y = 500)
 
 #-------------------open the serial port------------------
-serialData = sr.Serial('/dev/cu.Team_3_ESP-ESP32SPP', 115200);
+serialData = sr.Serial('COM13', 115200);
 serialData.reset_input_buffer()
 
 
